@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学霸 HỌC BÁ — Tài liệu Chiến lược 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Ma+Shan+Zheng&display=swap');
+
+  :root {
+    --crimson:    #C0102A;
+    --deep-red:   #8B0018;
+    --gold:       #D4A235;
+    --light-gold: #F0CE72;
+    --pale-gold:  #FAF0CC;
+    --cream:      #FEF9EE;
+    --dark:       #2A0610;
+    --ink:        #3A0D15;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    font-family: 'Noto Serif', 'Noto Serif SC', serif;
+    overflow: hidden;
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── Decorative outer frame ── */
+  #stage {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Background lattice pattern ── */
+  #stage::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(212,162,53,.18) 40px),
+      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(212,162,53,.18) 40px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── Corner ornaments ── */
+  .corner {
+    position: fixed;
+    width: 120px; height: 120px;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .corner svg { width: 100%; height: 100%; }
+  .c-tl { top: 0; left: 0; }
+  .c-tr { top: 0; right: 0; transform: scaleX(-1); }
+  .c-bl { bottom: 0; left: 0; transform: scaleY(-1); }
+  .c-br { bottom: 0; right: 0; transform: scale(-1); }
+
+  /* ── Slide container ── */
+  #slides-wrapper {
+    position: absolute; inset: 0;
+    z-index: 10;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 16px 24px 64px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%) scale(.94);
+    transition: transform .65s cubic-bezier(.77,0,.18,1), opacity .65s ease;
+  }
+  .slide.active {
+    will-change: transform, opacity;
+  }
+
+  .slide.active {
+    opacity: 1; pointer-events: auto;
+    transform: translateX(0) scale(1);
+    will-change: auto;
+  }
+  .slide.prev  { transform: translateX(-100%) scale(.94); }
+  .slide.enter { transform: translateX(100%)  scale(.94); }
+
+  /* ── Inner card ── */
+  .card {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(220,50,70,.35) 0%, transparent 60%),
+      linear-gradient(160deg, rgba(175,18,40,.88) 0%, rgba(95,8,22,.94) 100%);
+    border: 1px solid rgba(212,162,53,.7);
+    box-shadow:
+      0 0 0 4px rgba(212,162,53,.12),
+      0 0 80px rgba(192,16,42,.4),
+      inset 0 1px 0 rgba(255,255,255,.06),
+      inset 0 0 60px rgba(0,0,0,.25);
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    max-height: calc(100vh - 80px);
+    overflow: hidden;
+    padding: 40px 60px 36px;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+
+  /* card inner border */
+  .card::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(212,162,53,.5);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* ── Cover slide ── */
+  .slide-cover .card {
+    align-items: center; justify-content: center; text-align: center;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(220,40,65,.5) 0%, transparent 65%),
+      radial-gradient(ellipse at 50% 100%, rgba(80,0,15,.6) 0%, transparent 60%),
+      linear-gradient(170deg, rgba(165,15,35,.92) 0%, rgba(75,5,18,.97) 100%);
+    padding: 48px 64px;
+  }
+
+  /* ── Logo wrapper ── */
+  .cover-logo-wrap {
+    position: relative;
+    margin-bottom: 1.6em;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cover-logo-glow {
+    position: absolute;
+    width: 340px; height: 180px;
+    background: radial-gradient(ellipse, rgba(255,255,255,.18) 0%, rgba(212,162,53,.12) 40%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    pointer-events: none;
+  }
+  .cover-logo {
+    position: relative;
+    height: clamp(100px, 14vw, 160px);
+    width: auto;
+    mix-blend-mode: multiply;
+    filter:
+      drop-shadow(0 0 18px rgba(255,255,255,.55))
+      drop-shadow(0 0 40px rgba(212,162,53,.5))
+      drop-shadow(0 4px 12px rgba(0,0,0,.4));
+    animation: logoFloat 4s ease-in-out infinite;
+  }
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+  }
+  .cover-hanzi {
+    font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    color: var(--light-gold);
+    text-shadow: 0 0 40px rgba(201,146,42,.7), 0 2px 6px rgba(0,0,0,.8);
+    letter-spacing: .2em;
+    line-height: 1;
+    margin-bottom: .15em;
+  }
+  .cover-latin {
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+    letter-spacing: .35em;
+    color: var(--pale-gold);
+    text-transform: uppercase;
+    margin-bottom: 1.4em;
+    font-weight: 700;
+  }
+  .cover-tagline {
+    font-size: clamp(.85rem, 1.3vw, 1.05rem);
+    color: rgba(255,242,200,.82);
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    margin-bottom: 2.2em;
+  }
+  .cover-divider {
+    width: 260px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 2.4em;
+  }
+  .cover-title {
+    font-size: clamp(1.05rem, 1.9vw, 1.4rem);
+    color: #FDF8E8;
+    line-height: 1.7;
+    max-width: 700px;
+    font-style: italic;
+  }
+  .cover-subtitle {
+    margin-top: .6em;
+    font-size: clamp(.75rem, 1.1vw, .9rem);
+    color: rgba(255,242,200,.68);
+    letter-spacing: .12em;
+  }
+
+  /* ── Regular slide header ── */
+  .slide-label {
+    font-size: .85rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: rgba(212,162,53,.75);
+    margin-bottom: .5em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .slide-label::before, .slide-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,146,42,.3));
+  }
+  .slide-label::after { background: linear-gradient(270deg, transparent, rgba(201,146,42,.3)); }
+
+  .slide-headline {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+    color: var(--light-gold);
+    font-weight: 700;
+    margin-bottom: .15em;
+    text-shadow: 0 0 24px rgba(201,146,42,.4);
+    line-height: 1.2;
+  }
+  .slide-subtitle {
+    font-size: clamp(.95rem, 1.3vw, 1.15rem);
+    color: rgba(201,146,42,.7);
+    font-style: italic;
+    margin-bottom: 1.2em;
+    letter-spacing: .05em;
+  }
+
+  .gold-hr {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), rgba(201,146,42,.3), transparent);
+    margin-bottom: 1.4em;
+    flex-shrink: 0;
+  }
+
+  /* ── Scrollable body ── */
+  .slide-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 14px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(201,146,42,.4) transparent;
+  }
+  .slide-body::-webkit-scrollbar { width: 5px; }
+  .slide-body::-webkit-scrollbar-track { background: transparent; }
+  .slide-body::-webkit-scrollbar-thumb { background: rgba(201,146,42,.4); border-radius: 2px; }
+
+  .slide-body p {
+    font-size: clamp(1rem, 1.35vw, 1.15rem);
+    color: rgba(255,242,200,.92);
+    line-height: 1.9;
+    margin-bottom: 1em;
+  }
+
+  .slide-body h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    color: var(--light-gold);
+    margin: 1.3em 0 .55em;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .slide-body h3::before {
+    content: '◆';
+    font-size: .55em;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .slide-body ul { list-style: none; padding-left: 0; margin-bottom: 1em; }
+  .slide-body ul li {
+    font-size: clamp(.97rem, 1.28vw, 1.1rem);
+    color: rgba(255,242,200,.9);
+    line-height: 1.8;
+    padding: .35em 0 .35em 1.6em;
+    position: relative;
+  }
+  .slide-body ul li::before {
+    content: '—';
+    position: absolute; left: 0;
+    color: var(--gold);
+    font-size: .9em;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--gold);
+    margin: 1.3em 0;
+    padding: 1em 1.5em;
+    background: rgba(212,162,53,.1);
+    border-radius: 0 2px 2px 0;
+    font-style: italic;
+    color: #FDF0C8;
+    font-size: clamp(.97rem, 1.28vw, 1.1rem);
+    line-height: 1.85;
+  }
+
+  /* ── Value cards (5-col) ── */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin: 1em 0;
+  }
+  .value-card {
+    background: rgba(201,146,42,.06);
+    border: 1px solid rgba(201,146,42,.22);
+    border-top: 3px solid var(--gold);
+    padding: 18px 12px 14px;
+    border-radius: 0 0 3px 3px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .value-icon {
+    font-size: 1.6rem;
+    margin-bottom: .5em;
+    line-height: 1;
+  }
+  .value-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(.78rem, .95vw, .88rem);
+    color: var(--light-gold);
+    font-weight: 700;
+    margin-bottom: .5em;
+    line-height: 1.3;
+  }
+  .value-desc {
+    font-size: clamp(.68rem, .82vw, .76rem);
+    color: rgba(255,242,200,.78);
+    line-height: 1.55;
+  }
+
+  /* ── Feature grid (2-col cards) ── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 1em 0;
+  }
+  .feature-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+  .feature-card {
+    background: rgba(201,146,42,.05);
+    border: 1px solid rgba(201,146,42,.2);
+    border-left: 3px solid rgba(201,146,42,.6);
+    padding: 14px 16px;
+    border-radius: 0 3px 3px 0;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .feature-card.highlight { border-left-color: var(--gold); background: rgba(201,146,42,.09); }
+  .fc-label {
+    font-size: clamp(.62rem, .78vw, .72rem);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(201,146,42,.55);
+  }
+  .fc-title {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--light-gold);
+    font-weight: 600;
+    font-size: clamp(.88rem, 1.1vw, 1rem);
+    line-height: 1.25;
+  }
+  .fc-body {
+    color: rgba(255,242,200,.86);
+    font-size: clamp(.78rem, .97vw, .88rem);
+    line-height: 1.65;
+  }
+
+  /* ── Pipeline (numbered steps) ── */
+  .pipeline {
+    display: flex; flex-direction: column;
+    gap: 8px; margin: .8em 0;
+  }
+  .pipeline-step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: rgba(201,146,42,.04);
+    border: 1px solid rgba(201,146,42,.15);
+    padding: 11px 16px; border-radius: 3px;
+    position: relative;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, var(--gold), #a0721f);
+    color: var(--dark);
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700; font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(201,146,42,.3);
+  }
+  .step-content { flex: 1; }
+  .step-title {
+    color: var(--light-gold);
+    font-weight: 600;
+    font-size: clamp(.88rem, 1.1vw, 1rem);
+    margin-bottom: .2em;
+  }
+  .step-desc {
+    color: rgba(255,242,200,.86);
+    font-size: clamp(.78rem, .95vw, .87rem);
+    line-height: 1.6;
+  }
+
+  /* ── Segment chips (2-col) ── */
+  .segment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; margin: .8em 0;
+  }
+  .seg-card {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(201,146,42,.05);
+    border: 1px solid rgba(201,146,42,.18);
+    padding: 12px 14px; border-radius: 3px;
+  }
+  .seg-dot {
+    flex-shrink: 0;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-top: .35em;
+    box-shadow: 0 0 6px rgba(201,146,42,.5);
+  }
+  .seg-title {
+    color: var(--light-gold);
+    font-weight: 600;
+    font-size: clamp(.85rem, 1.05vw, .95rem);
+    margin-bottom: .2em;
+  }
+  .seg-desc {
+    color: rgba(255,242,200,.82);
+    font-size: clamp(.75rem, .9vw, .83rem);
+    line-height: 1.55;
+  }
+
+  /* ── Task cards for Writing/Speaking ── */
+  .task-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; margin: .8em 0;
+  }
+  .task-card {
+    background: rgba(139,10,26,.35);
+    border: 1px solid rgba(201,146,42,.22);
+    border-radius: 3px;
+    padding: 13px 14px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .task-badge {
+    display: inline-flex; align-items: center;
+    background: rgba(201,146,42,.2);
+    border: 1px solid rgba(201,146,42,.4);
+    color: var(--light-gold);
+    font-size: .62rem;
+    letter-spacing: .12em;
+    padding: 2px 8px; border-radius: 2px;
+    width: fit-content; margin-bottom: 2px;
+  }
+  .task-name {
+    color: var(--light-gold);
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: clamp(.83rem, 1vw, .93rem);
+    line-height: 1.25;
+  }
+  .task-desc {
+    color: rgba(255,242,200,.8);
+    font-size: clamp(.72rem, .88vw, .8rem);
+    line-height: 1.6;
+  }
+
+  /* ── AI tiers (2x2 grid) ── */
+  .ai-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px; margin: .8em 0;
+  }
+  .ai-card {
+    background: rgba(139,10,26,.3);
+    border: 1px solid rgba(201,146,42,.22);
+    border-top: 3px solid rgba(201,146,42,.5);
+    padding: 16px 18px;
+    border-radius: 0 0 3px 3px;
+  }
+  .ai-tier {
+    font-size: .68rem; letter-spacing: .2em;
+    text-transform: uppercase;
+    color: rgba(201,146,42,.55);
+    margin-bottom: .4em;
+  }
+  .ai-title {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--light-gold);
+    font-weight: 700;
+    font-size: clamp(.93rem, 1.2vw, 1.08rem);
+    margin-bottom: .5em;
+  }
+  .ai-desc {
+    color: rgba(255,242,200,.88);
+    font-size: clamp(.8rem, 1vw, .9rem);
+    line-height: 1.7;
+  }
+
+  /* ── Problem cards (numbered, warning-style) ── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; margin: .8em 0;
+  }
+  .problem-card {
+    display: flex; align-items: flex-start; gap: 13px;
+    background: rgba(139,10,26,.3);
+    border: 1px solid rgba(201,146,42,.18);
+    border-radius: 3px; padding: 12px 14px;
+  }
+  .prob-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border: 2px solid rgba(201,146,42,.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: .78rem;
+    color: var(--gold);
+  }
+  .prob-title {
+    color: var(--light-gold);
+    font-weight: 600;
+    font-size: clamp(.85rem, 1.05vw, .95rem);
+    margin-bottom: .2em;
+  }
+  .prob-desc {
+    color: rgba(255,242,200,.82);
+    font-size: clamp(.75rem, .9vw, .83rem);
+    line-height: 1.55;
+  }
+
+  /* ── Stats grid ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin: 1.2em 0;
+  }
+  .stat-box {
+    background: rgba(201,146,42,.08);
+    border: 1px solid rgba(201,146,42,.3);
+    border-top: 2px solid rgba(201,146,42,.5);
+    border-radius: 3px;
+    padding: 22px 16px;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    color: var(--light-gold);
+    font-weight: 900;
+    display: block;
+    line-height: 1.1;
+    text-shadow: 0 0 24px rgba(201,146,42,.6);
+  }
+  .stat-label {
+    font-size: clamp(.8rem, 1vw, .95rem);
+    color: rgba(255,242,200,.85);
+    margin-top: .5em;
+    line-height: 1.45;
+    letter-spacing: .03em;
+  }
+
+  /* ── Moat layers ── */
+  .moat-list { display: flex; flex-direction: column; gap: 10px; margin: 1em 0; }
+  .moat-item {
+    background: rgba(201,146,42,.06);
+    border: 1px solid rgba(201,146,42,.2);
+    border-left: 3px solid var(--gold);
+    padding: 14px 20px;
+    font-size: clamp(.97rem, 1.25vw, 1.1rem);
+    color: rgba(255,242,200,.92);
+    line-height: 1.7;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* ── Phases ── */
+  .phase-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 1em 0; }
+  .phase-box {
+    background: rgba(139,10,26,.3);
+    border: 1px solid rgba(201,146,42,.25);
+    border-top: 3px solid var(--gold);
+    padding: 18px 14px;
+    border-radius: 0 0 3px 3px;
+  }
+  .phase-tag {
+    font-size: .8rem;
+    letter-spacing: .18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: .5em;
+  }
+  .phase-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1rem, 1.3vw, 1.2rem);
+    color: var(--light-gold);
+    font-weight: 600;
+    margin-bottom: .8em;
+  }
+  .phase-box ul { margin-bottom: 0; }
+
+  /* ── Navigation ── */
+  #nav {
+    position: fixed;
+    bottom: 32px; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: center;
+    gap: 24px;
+    z-index: 200;
+  }
+
+  .nav-btn {
+    background: rgba(139,10,26,.7);
+    border: 1px solid var(--gold);
+    color: var(--light-gold);
+    width: 52px; height: 52px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .25s, box-shadow .25s, transform .2s;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 20px rgba(0,0,0,.6);
+  }
+  .nav-btn:hover {
+    background: rgba(180,20,40,.85);
+    box-shadow: 0 0 18px rgba(201,146,42,.4);
+    transform: translateY(-2px);
+  }
+  .nav-btn:active { transform: scale(.95); }
+  .nav-btn:disabled { opacity: .3; cursor: default; transform: none; }
+
+  #slide-counter {
+    font-family: 'Noto Serif SC', serif;
+    font-size: .78rem;
+    letter-spacing: .22em;
+    color: rgba(201,146,42,.7);
+    text-transform: uppercase;
+    min-width: 80px;
+    text-align: center;
+    user-select: none;
+  }
+
+  /* ── Dots ── */
+  #dots {
+    display: flex; gap: 6px;
+    align-items: center;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(201,146,42,.3);
+    transition: all .3s;
+    cursor: pointer;
+  }
+  .dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
+
+  /* ── Top seal ── */
+  #seal {
+    position: fixed; top: 20px; right: 130px;
+    z-index: 200;
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: .85rem;
+    color: rgba(201,146,42,.4);
+    letter-spacing: .1em;
+    pointer-events: none;
+  }
+
+  /* ── Slide-in animation for body text ── */
+  .slide.active .card > * {
+    animation: fadeUp .6s ease both;
+  }
+  .slide.active .card > *:nth-child(1) { animation-delay: .05s; }
+  .slide.active .card > *:nth-child(2) { animation-delay: .12s; }
+  .slide.active .card > *:nth-child(3) { animation-delay: .18s; }
+  .slide.active .card > *:nth-child(4) { animation-delay: .24s; }
+  .slide.active .card > *:nth-child(5) { animation-delay: .30s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .card { padding: 28px 24px 24px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .phase-grid { grid-template-columns: 1fr; }
+    .slide { padding: 40px 20px 70px; }
+    .corner { width: 70px; height: 70px; }
+  }
+
+  /* ── Continuous gold shimmer on headline ── */
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  .cover-hanzi {
+    background: linear-gradient(90deg, #C9922A 0%, #F5E6B8 40%, #E8C56A 60%, #C9922A 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- Corner ornaments -->
+<div class="corner c-tl">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0 L60 0 L60 8 L8 8 L8 60 L0 60 Z" fill="rgba(201,146,42,.45)"/>
+    <path d="M0 0 L40 0 L40 6 L6 6 L6 40 L0 40 Z" fill="rgba(201,146,42,.25)"/>
+    <path d="M16 16 L50 16 L50 20 L20 20 L20 50 L16 50 Z" fill="rgba(201,146,42,.2)"/>
+    <circle cx="14" cy="14" r="4" fill="rgba(201,146,42,.5)"/>
+    <circle cx="14" cy="14" r="2" fill="rgba(201,146,42,.8)"/>
+    <line x1="24" y1="14" x2="60" y2="14" stroke="rgba(201,146,42,.25)" stroke-width="1"/>
+    <line x1="14" y1="24" x2="14" y2="60" stroke="rgba(201,146,42,.25)" stroke-width="1"/>
+  </svg>
+</div>
+<div class="corner c-tr"></div>
+<div class="corner c-bl"></div>
+<div class="corner c-br"></div>
+
+<div id="seal">學霸 · 2026 · 內部</div>
+
+<div id="stage">
+  <div id="slides-wrapper"></div>
+</div>
+
+<!-- Navigation -->
+<nav id="nav">
+  <button class="nav-btn" id="prevBtn" aria-label="Trang trước">&#10094;</button>
+  <div id="dots"></div>
+  <span id="slide-counter">01 / 17</span>
+  <button class="nav-btn" id="nextBtn" aria-label="Trang sau">&#10095;</button>
+</nav>
+
+<script>
+/* =====================================================
+   DATA — 17 SLIDES
+   ===================================================== */
+const slides = [
+  /* 0 — Cover */
+  {
+    type: 'cover',
+    hanzi: '学霸',
+    latin: 'HỌC BÁ',
+    tagline: 'Language · Technology · Vietnam',
+    title: 'Từ Trung tâm Tiếng Trung đến Công ty AI Ngôn ngữ',
+    desc: 'Tài liệu Chiến lược, Công nghệ và Tầm nhìn<br>Dành cho Chuyên gia Ngôn ngữ và Nhà đầu tư',
+    date: 'Tháng 4 năm 2026 · Tài liệu nội bộ'
+  },
+
+  /* 1 — Lời Mở Đầu */
+  {
+    label: 'Lời Mở Đầu',
+    headline: 'Tại sao chúng tôi làm điều này',
+    subtitle: 'Sứ mệnh khởi nguồn',
+    body: `
+      <p>Giáo dục ngôn ngữ không phải là một ngành kinh doanh thuần túy. Với chúng tôi, đó là một <strong style="color:var(--light-gold)">sứ mệnh</strong>. Mỗi học viên bước vào lớp học tiếng Trung của Học Bá không chỉ đang học một ngôn ngữ — họ đang mở ra một cánh cửa mới: một cơ hội việc làm tốt hơn, một nền tảng học thuật vững chắc hơn, một khả năng kết nối với hàng tỷ người ở một nền văn hóa vĩ đại ngay bên cạnh Việt Nam.</p>
+      <p>Nhưng chúng tôi cũng nhìn thấy một thực tế đáng lo ngại: nền giáo dục ngôn ngữ Việt Nam đang bị <strong style="color:var(--light-gold)">bỏ lại phía sau</strong> về mặt công nghệ. Trong khi thế giới đã bước vào kỷ nguyên học tập cá nhân hóa được hỗ trợ bởi trí tuệ nhân tạo, hầu hết các trung tâm tiếng Trung tại Việt Nam vẫn đang chấm bài bằng tay, quản lý học viên bằng sổ giấy, và không có cách nào đo lường chính xác sự tiến bộ của từng người học.</p>
+      <p>Học Bá được sinh ra từ câu hỏi: <em>Điều gì sẽ xảy ra nếu mỗi học viên Việt Nam có trong tay một người thầy AI hiểu chính xác điểm yếu của mình — biết mình cần luyện thanh điệu nào, biết mình sắp sẵn sàng thi HSK chưa?</em></p>
+      <blockquote>Chúng tôi không xây dựng công nghệ vì công nghệ. Chúng tôi xây dựng công nghệ vì tin rằng mỗi người Việt Nam xứng đáng được học tiếng Trung theo cách tốt nhất, nhanh nhất và hiệu quả nhất có thể.</blockquote>
+      <p>Tài liệu này trình bày toàn bộ hành trình — từ những ngày đầu mở lớp học nhỏ, đến khi xây dựng LMS và ERP tự chủ, đến khi phát triển HSK API chấm bài tự động, và tầm nhìn trở thành <strong style="color:var(--light-gold)">công ty AI ngôn ngữ hàng đầu Việt Nam và khu vực Đông Nam Á</strong>. Chúng tôi viết tài liệu này không chỉ để giới thiệu với nhà đầu tư hay chuyên gia ngôn ngữ — mà để chia sẻ một niềm tin: rằng Việt Nam hoàn toàn có thể xây dựng được một công ty công nghệ ngôn ngữ đẳng cấp thế giới, xuất phát từ lớp học thật, từ học viên thật, và từ dữ liệu thật.</p>
+    `
+  },
+
+  /* 2 — Giới Thiệu Công Ty */
+  {
+    label: 'Chương I',
+    headline: 'Giới Thiệu Công Ty Học Bá',
+    subtitle: '学霸 — Language Technology',
+    body: `
+      <h3>1.1 Tên thương hiệu và ý nghĩa</h3>
+      <p>Học Bá (学霸, xuéba) trong tiếng Trung có nghĩa là người học xuất sắc, bá chủ về học thuật — không phải là cái tên ngẫu nhiên. Nó phản ánh chính xác tầm nhìn: tạo ra những công cụ và môi trường học tập để bất kỳ người Việt Nam nào cũng có thể trở thành <em>học bá</em>. Cái tên này còn mang một lợi thế thương hiệu quan trọng: cả người Việt lẫn người Trung đều có thể đọc, hiểu và cảm nhận được ngay lập tức.</p>
+      <h3>1.2 Sứ mệnh</h3>
+      <blockquote>Học Bá tồn tại để làm cho giáo dục tiếng Trung tại Việt Nam trở nên chính xác hơn, cá nhân hóa hơn và công bằng hơn — bằng cách xây dựng công nghệ xuất phát từ hiểu biết sâu sắc về người học Việt Nam.</blockquote>
+      <h3>1.3 Tầm nhìn</h3>
+      <p>Trở thành <strong style="color:var(--light-gold)">công ty AI ngôn ngữ hàng đầu Đông Nam Á</strong> chuyên về học tiếng Trung — nơi công nghệ và sư phạm hòa quyện để tạo ra trải nghiệm học tập tốt nhất cho người Việt.</p>
+      <h3>1.4 Năm giá trị cốt lõi</h3>
+      <div class="value-grid">
+        <div class="value-card">
+          <div class="value-icon">🎯</div>
+          <div class="value-name">Người học là trung tâm</div>
+          <div class="value-desc">Mọi quyết định công nghệ xuất phát từ: điều này có giúp học viên học tốt hơn không?</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">📊</div>
+          <div class="value-name">Dữ liệu thật, kết quả thật</div>
+          <div class="value-desc">Mọi thuật toán được xây dựng và kiểm chứng từ dữ liệu thực tế người học Việt Nam.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">⚙️</div>
+          <div class="value-name">Công nghệ phục vụ giáo dục</div>
+          <div class="value-desc">AI là công cụ, không phải mục đích. Chất lượng dạy và học mới là thước đo thành công.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🛡️</div>
+          <div class="value-name">Tự chủ &amp; bền vững</div>
+          <div class="value-desc">Không phụ thuộc bất kỳ nhà cung cấp nước ngoài nào trong dài hạn.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🌏</div>
+          <div class="value-name">Trách nhiệm xã hội</div>
+          <div class="value-desc">Đóng góp vào sự phát triển nền giáo dục Việt Nam, không chỉ tối ưu hóa lợi nhuận.</div>
+        </div>
+      </div>
+    `
+  },
+
+  /* 3 — Bức Tranh Giáo Dục */
+  {
+    label: 'Chương II',
+    headline: 'Bức Tranh Giáo Dục Ngôn Ngữ tại Việt Nam',
+    subtitle: 'Tại sao tiếng Trung, tại sao bây giờ, tại sao Việt Nam',
+    body: `
+      <h3>2.1 Vị trí địa lý — Lợi thế chiến lược không thể thay thế</h3>
+      <p>Việt Nam chia sẻ đường biên giới trên bộ dài hơn <strong style="color:var(--light-gold)">1.300 km</strong> với Trung Quốc — đó là hàng thế kỷ giao thương, văn hóa và ngôn ngữ kết nối. Kim ngạch thương mại Việt–Trung vượt <strong style="color:var(--light-gold)">175 tỷ USD</strong> năm 2023. Hàng trăm nghìn doanh nghiệp Việt Nam có giao dịch với đối tác Trung Quốc trong xuất nhập khẩu, logistics, sản xuất và thương mại điện tử. Khả năng sử dụng tiếng Trung đã trở thành <em>yêu cầu cơ bản của thị trường lao động</em>, không còn là lợi thế cạnh tranh nữa.</p>
+      <h3>2.2 Năm điểm yếu nghiêm trọng của thực trạng dạy và học</h3>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="prob-num">1</div>
+          <div><div class="prob-title">Thiếu chuẩn hóa</div><div class="prob-desc">Chất lượng giảng dạy giữa các trung tâm chênh lệch rất lớn. Không có tiêu chuẩn thống nhất nào ngoài HSK.</div></div>
+        </div>
+        <div class="problem-card">
+          <div class="prob-num">2</div>
+          <div><div class="prob-title">Chấm bài thủ công</div><div class="prob-desc">Phần lớn bài Speaking và Writing chấm thủ công — tốn thời gian, thiếu nhất quán và không thể scale.</div></div>
+        </div>
+        <div class="problem-card">
+          <div class="prob-num">3</div>
+          <div><div class="prob-title">Không có phản hồi tức thời</div><div class="prob-desc">Học viên chờ hàng ngày để biết mình sai ở đâu. Phản hồi tức thời cải thiện tốc độ học nhanh hơn 40%.</div></div>
+        </div>
+        <div class="problem-card">
+          <div class="prob-num">4</div>
+          <div><div class="prob-title">Lộ trình học rập khuôn</div><div class="prob-desc">Tất cả học viên học cùng giáo trình, cùng tốc độ — lãng phí lớn về thời gian và nguồn lực.</div></div>
+        </div>
+        <div class="problem-card" style="grid-column: span 2;">
+          <div class="prob-num">5</div>
+          <div><div class="prob-title">Dữ liệu học tập không được khai thác</div><div class="prob-desc">Hàng nghìn bài làm, bài nói, lỗi sai của học viên bị bỏ đi sau khi chấm — không ai phân tích để cải thiện phương pháp giảng dạy.</div></div>
+        </div>
+      </div>
+      <h3>2.3 Kỳ thi HSK — Chuẩn mực quốc tế duy nhất</h3>
+      <p>HSK (汉语水平考试) là kỳ thi năng lực tiếng Trung quốc tế được Hanban tổ chức và công nhận toàn cầu. Tại Việt Nam, HSK là yêu cầu bắt buộc cho du học sinh (HSK 4+), vị trí tuyển dụng FDI (HSK 5–6), và học bổng Trung Quốc. Số thí sinh thi HSK tăng trưởng trung bình <strong style="color:var(--light-gold)">40% mỗi năm</strong> giai đoạn 2019-2024 — thị trường đang phát triển nhanh và chưa được phục vụ đúng tiềm năng.</p>
+    `
+  },
+
+  /* 4 — Phân Tích Thị Trường */
+  {
+    label: 'Chương III',
+    headline: 'Phân Tích Thị Trường',
+    subtitle: 'Cơ hội và khoảng trống',
+    body: `
+      <h3>3.1 Quy mô thị trường</h3>
+      <div class="stats-grid">
+        <div class="stat-box"><span class="stat-value">2M+</span><div class="stat-label">Người đang học tiếng Trung tại Việt Nam</div></div>
+        <div class="stat-box"><span class="stat-value">Top 5</span><div class="stat-label">Quốc gia học tiếng Trung lớn nhất ĐNA</div></div>
+        <div class="stat-box"><span class="stat-value">40%</span><div class="stat-label">Tăng trưởng thí sinh HSK mỗi năm 2019–2024</div></div>
+        <div class="stat-box"><span class="stat-value">$0</span><div class="stat-label">Sản phẩm AI chấm HSK chuyên biệt cho người Việt hiện có</div></div>
+      </div>
+      <h3>3.2 Các phân khúc nhu cầu chính</h3>
+      <div class="segment-grid">
+        <div class="seg-card">
+          <div class="seg-dot"></div>
+          <div><div class="seg-title">Học viên luyện thi HSK</div><div class="seg-desc">Phân khúc lớn nhất — nhu cầu phản hồi chính xác, nhanh về Writing &amp; Speaking.</div></div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-dot"></div>
+          <div><div class="seg-title">Người đi làm học tiếng Trung</div><div class="seg-desc">Mục tiêu thực dụng rõ ràng — cần lộ trình cá nhân hóa và hiệu quả cao nhất.</div></div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-dot"></div>
+          <div><div class="seg-title">Du học sinh sang Trung Quốc</div><div class="seg-desc">Yêu cầu cao về kỹ năng học thuật — Speaking và Writing chuẩn HSK 4+.</div></div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-dot"></div>
+          <div><div class="seg-title">Học sinh phổ thông</div><div class="seg-desc">Tăng trưởng nhanh khi tiếng Trung vào chương trình chính khóa nhiều trường.</div></div>
+        </div>
+        <div class="seg-card" style="grid-column: span 2;">
+          <div class="seg-dot"></div>
+          <div><div class="seg-title">Trung tâm tiếng Trung — B2B</div><div class="seg-desc">Nhu cầu LMS, ERP và công cụ chấm bài tự động để vận hành hiệu quả hơn ở quy mô lớn.</div></div>
+        </div>
+      </div>
+      <h3>3.3 Khoảng trống thị trường</h3>
+      <p>Nhìn vào bức tranh cạnh tranh hiện tại, có một khoảng trống rõ ràng: không có sản phẩm AI ngôn ngữ nào được xây dựng chuyên biệt cho người Việt học tiếng Trung. Các ứng dụng quốc tế như Duolingo, HelloChinese hay Pleco được thiết kế cho thị trường toàn cầu — không hiểu đặc thù ngôn ngữ của người Việt, không có barem chấm theo chuẩn HSK Việt Nam, và không tích hợp với hệ sinh thái đào tạo của các trung tâm trong nước.</p>
+      <blockquote>Đây chính là khoảng trống mà Học Bá đang chiếm lĩnh. Và lợi thế của chúng tôi không phải chỉ là ý tưởng — chúng tôi đã xây dựng xong công nghệ, đã có dữ liệu thật, và đang vận hành hệ thống trong thực tế.</blockquote>
+    `
+  },
+
+  /* 5 — Hành Trình Phát Triển */
+  {
+    label: 'Chương IV',
+    headline: 'Hành Trình Phát Triển Học Bá',
+    subtitle: 'Từ lớp học đến công ty công nghệ',
+    body: `
+      <h3>4.1 Giai đoạn 1 — Nền tảng giáo dục</h3>
+      <p>Học Bá bắt đầu như một trung tâm dạy tiếng Trung. Không có vốn công nghệ, không có đội kỹ sư — chỉ có niềm tin rằng học viên Việt Nam xứng đáng được học tốt hơn. Giai đoạn này tập trung vào một điều: <strong style="color:var(--light-gold)">hiểu thật sâu học viên</strong>. Chúng tôi quan sát hàng nghìn bài làm, nghe hàng trăm giờ audio học viên đọc tiếng Trung, ghi lại lỗi sai và pattern lặp lại. Đây là dữ liệu thực chiến từ lớp học thật — không phải nghiên cứu học thuật.</p>
+      <h3>4.2 Giai đoạn 2 — Tự chủ hệ thống quản lý</h3>
+      <p>Khi trung tâm phát triển, bài toán quản lý xuất hiện: theo dõi tiến độ hàng trăm học viên, quản lý lịch học nhiều giáo viên, vận hành tài chính minh bạch. Các phần mềm có sẵn không phù hợp. Quyết định được đưa ra: <strong style="color:var(--light-gold)">tự xây hệ thống</strong>. Đây là quyết định khó khăn và tốn kém — nhưng mang lại thứ quan trọng hơn tất cả: hiểu biết sâu sắc về cách dữ liệu giáo dục được tạo ra, lưu trữ và khai thác.</p>
+      <h3>4.3 Giai đoạn 3 — Bước ngoặt công nghệ AI</h3>
+      <p>Câu hỏi lớn tiếp theo: liệu AI có thể chấm bài Writing và Speaking tự động không? Chấm bài tiếng Trung không đơn giản là so khớp đáp án — nó đòi hỏi hiểu ngữ cảnh, nhận biết lỗi ngữ pháp, đánh giá phát âm và đưa ra phản hồi có ý nghĩa sư phạm. Sau hơn một năm phát triển, Học Bá đã xây dựng thành công <strong style="color:var(--light-gold)">HSK API</strong> — hệ thống chấm bài Writing và Speaking tự động đầu tiên được thiết kế đặc biệt cho người Việt học tiếng Trung theo chuẩn HSK.</p>
+      <blockquote>Đây không phải là hệ thống dựa hoàn toàn vào AI — đó là hệ thống hybrid kết hợp AI với hard-rule backend, nơi điểm cuối luôn được quyết định bởi luật chấm rõ ràng, minh bạch, không bao giờ bị ảnh hưởng bởi hallucination của model.</blockquote>
+    `
+  },
+
+  /* 6 — HSK Writing API */
+  {
+    label: 'Chương V · Trụ Cột 1',
+    headline: 'HSK Writing API',
+    subtitle: 'Kiến trúc hybrid: LLM + Rule Engine',
+    body: `
+      <p>HSK Writing API là lõi kỹ thuật phức tạp nhất của Học Bá — xử lý <strong style="color:var(--light-gold)">6 dạng bài viết</strong> theo chuẩn HSK 3/4/5/6. LLM (Large Language Model) đóng vai trò phân tích ngôn ngữ ban đầu; backend rule engine mới là nơi giữ luật chấm và quyết định điểm cuối. Nguyên tắc này đảm bảo kết quả chấm luôn nhất quán, minh bạch và không bị hallucination ảnh hưởng.</p>
+      <h3>6 dạng bài Writing được hỗ trợ</h3>
+      <div class="task-grid">
+        <div class="task-card">
+          <div class="task-badge">HSK 3 / 4 / 5</div>
+          <div class="task-name">Sentence Arrangement</div>
+          <div class="task-desc">Binary scoring. Backend chuẩn hóa, so khớp chính xác đáp án mẫu. LLM chỉ giải thích ngữ pháp.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-badge">HSK 3</div>
+          <div class="task-name">Hanzi Writing</div>
+          <div class="task-desc">Viết chữ Hán theo pinyin. Binary: đúng → 8đ, sai bất kỳ đâu → 0đ.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-badge">HSK 4</div>
+          <div class="task-name">Picture Sentence</div>
+          <div class="task-desc">Đặt câu theo tranh. Backend tự kiểm tra từ bắt buộc, loại bỏ deduction sai từ LLM.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-badge">HSK 5</div>
+          <div class="task-name">Short Paragraph</div>
+          <div class="task-desc">5 từ bắt buộc. Server tự đếm ký tự, kiểm tra từ và áp barem theo thang điểm quy định.</div>
+        </div>
+        <div class="task-card">
+          <div class="task-badge">HSK 5</div>
+          <div class="task-name">Picture Paragraph</div>
+          <div class="task-desc">Dùng chung length engine. LLM đánh giá image relevance và content coherence.</div>
+        </div>
+        <div class="task-card" style="border-color:rgba(201,146,42,.4); background:rgba(139,10,26,.5);">
+          <div class="task-badge">HSK 6 · deepseek-reasoner</div>
+          <div class="task-name">Summary Writing</div>
+          <div class="task-desc">Phức tạp nhất. Barem 400–440 ký tự, bigram/trigram overlap detection, missing source points.</div>
+        </div>
+      </div>
+    `
+  },
+
+  /* 7 — HSK Speaking API */
+  {
+    label: 'Chương V · Trụ Cột 2',
+    headline: 'HSK Speaking API',
+    subtitle: 'Pipeline 6 tầng xử lý bài nói',
+    body: `
+      <p>HSK Speaking API xử lý bài nói của học viên qua <strong style="color:var(--light-gold)">pipeline 6 tầng</strong> phức tạp, kết hợp xử lý âm thanh, nhận dạng giọng nói (ASR), và phân tích nội dung ngôn ngữ. Hệ thống hỗ trợ 6 dạng bài Speaking theo chuẩn HSK.</p>
+      <div class="pipeline">
+        <div class="pipeline-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Audio Normalization</div>
+            <div class="step-desc">Chuẩn hóa audio về định dạng WAV canonical. Đảm bảo nhất quán bất kể thiết bị hay ứng dụng ghi âm của học viên.</div>
+          </div>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Audio Analysis</div>
+            <div class="step-desc">Đo duration, phát hiện hesitation (ngắc ngứ), VAD (Voice Activity Detection) xác định phần thực sự có giọng nói.</div>
+          </div>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">ASR Transcription</div>
+            <div class="step-desc">Chuyển đổi giọng nói thành văn bản. Tầng quan trọng nhất nhưng dễ xảy ra lỗi do đồng âm dị nghĩa trong tiếng Trung.</div>
+          </div>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Transcript Preparation</div>
+            <div class="step-desc">Homophone normalization, short-answer canonicalization, reference-based rescoring. Học Bá không tin tuyệt đối vào raw ASR — đây là điểm khác biệt lớn.</div>
+          </div>
+        </div>
+        <div class="pipeline-step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Task Branch</div>
+            <div class="step-desc">Alignment-based cho bài scripted (Repeat After Listening, Read Aloud) · LLM-assisted cho bài mở (Retell, Picture Description, Open Answer).</div>
+          </div>
+        </div>
+        <div class="pipeline-step" style="border-color:rgba(201,146,42,.35); background:rgba(139,10,26,.25);">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <div class="step-title">Verifier + SpeakingScorer</div>
+            <div class="step-desc">Verifier loại hallucination từ LLM. SpeakingScorer là rule engine quyết định điểm cuối — không bao giờ lấy điểm trực tiếp từ LLM.</div>
+          </div>
+        </div>
+      </div>
+    `
+  },
+
+  /* 8 — LMS + ERP */
+  {
+    label: 'Chương V · Trụ Cột 3',
+    headline: 'LMS + ERP',
+    subtitle: 'Hệ sinh thái quản lý và vận hành tự chủ',
+    body: `
+      <p><strong style="color:var(--light-gold)">LMS (Learning Management System)</strong> quản lý toàn bộ hành trình học tập của học viên: đăng ký khóa học, theo dõi tiến độ, kết quả bài thi, lộ trình học cá nhân, và hệ thống thông báo thông minh. <strong style="color:var(--light-gold)">ERP (Enterprise Resource Planning)</strong> quản lý vận hành toàn bộ trung tâm: lớp học, giáo viên, lịch dạy, tài chính và báo cáo kinh doanh.</p>
+      <blockquote>Điều quan trọng nhất về LMS + ERP của Học Bá không phải là tính năng — mà là dữ liệu. Mỗi tương tác của học viên với hệ thống đều tạo ra dữ liệu có giá trị.</blockquote>
+      <h3>Dữ liệu hành vi học tập được thu thập</h3>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="fc-label">Thời gian học</div>
+          <div class="fc-title">Phân bổ session theo giờ</div>
+          <div class="fc-body">Học viên học lúc mấy giờ trong ngày, bỏ bài ở chỗ nào, thói quen học theo tuần và tháng.</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-label">Hành vi ôn tập</div>
+          <div class="fc-title">Từ vựng & tần suất thử lại</div>
+          <div class="fc-body">Ôn tập từ nào nhiều nhất, thi thử bao nhiêu lần trước khi đạt điểm đủ để tiếp tục.</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-label">Hiệu suất theo bài</div>
+          <div class="fc-title">Tỷ lệ hoàn thành từng dạng</div>
+          <div class="fc-body">Theo dõi completion rate theo dạng bài, kỹ năng (Writing/Speaking/Reading) và cấp độ HSK.</div>
+        </div>
+        <div class="feature-card highlight">
+          <div class="fc-label">Phân tích cohort</div>
+          <div class="fc-title">Điểm mạnh / yếu nhóm học viên</div>
+          <div class="fc-body">So sánh với benchmark, phân tích cohort theo giáo viên, lớp, khoá học để tìm pattern cải thiện.</div>
+        </div>
+      </div>
+      <p>Đây là nguồn tài nguyên vô giá để xây dựng AI cá nhân hóa học tập — tạo thành <strong style="color:var(--light-gold)">vòng lặp dữ liệu khép kín, tự tăng cường theo thời gian</strong>: càng nhiều học viên dùng hệ thống, model càng được cải thiện, kết quả càng chính xác hơn.</p>
+    `
+  },
+
+  /* 9 — Insight Người Việt */
+  {
+    label: 'Chương VI',
+    headline: 'Insight Độc Quyền — Người Việt Học Tiếng Trung',
+    subtitle: 'Những gì dữ liệu của Học Bá tiết lộ',
+    body: `
+      <p>Đây là lĩnh vực mà Học Bá đã đầu tư nhiều nhất. Qua hàng nghìn bài làm và audio thực tế, chúng tôi đã tích lũy được bộ dữ liệu chi tiết về lỗi sai, pattern phát âm, hành vi học tập và đặc thù ngôn ngữ của người Việt khi học tiếng Trung — điều mà rất ít nền tảng khác có được. Những insight dưới đây là kết quả của quá trình đó</p>
+      <h3>6.1 Phát âm &amp; Thanh điệu — lỗi có thể dự đoán trước</h3>
+      <div class="feature-grid three-col">
+        <div class="feature-card highlight">
+          <div class="fc-label">Lỗi phổ biến nhất</div>
+          <div class="fc-title">Thanh 2 ↔ Thanh 3</div>
+          <div class="fc-body">Thanh 2 (lên như dấu sắc) bị nhầm sang thanh 3 (xuống rồi lên như dấu hỏi). Cấu trúc âm vị không tương đương giữa hai ngôn ngữ.</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-label">Ảnh hưởng thanh nặng</div>
+          <div class="fc-title">Thanh 4 bị dư âm lên</div>
+          <div class="fc-body">Thanh 4 (xuống mạnh) thường có dư âm lên ở cuối do cấu trúc thanh nặng tiếng Việt có hình dạng âm khác.</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-label">Âm vị thiếu trong tiếng Việt</div>
+          <div class="fc-title">zh/z · ch/c · sh/s</div>
+          <div class="fc-body">Các cặp âm đầu này không tồn tại trong hệ thống âm tiếng Việt — dẫn đến lỗi phát âm nhất quán và có thể dự đoán trước.</div>
+        </div>
+      </div>
+      <h3>6.2 Ngữ pháp — Lỗi có tính hệ thống, không ngẫu nhiên</h3>
+      <div class="feature-grid three-col">
+        <div class="feature-card">
+          <div class="fc-label">Bổ ngữ trạng thái</div>
+          <div class="fc-title">V + 得 + complement</div>
+          <div class="fc-body">Học viên Việt thường bỏ 得 hoặc đặt sai vị trí bổ ngữ do ảnh hưởng cú pháp tiếng Việt.</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-label">Trạng từ thời gian</div>
+          <div class="fc-title">Sai vị trí trong câu</div>
+          <div class="fc-body">Tiếng Trung cho phép linh hoạt hơn nhưng học viên Việt đặt sai theo thói quen cú pháp mẹ đẻ.</div>
+        </div>
+        <div class="feature-card highlight">
+          <div class="fc-label">Cấu trúc bị động</div>
+          <div class="fc-title">被 (bèi) — logic khác</div>
+          <div class="fc-body">Logic hoàn toàn khác bị động tiếng Việt — gây lỗi thường xuyên và nhất quán trong Writing HSK 5+.</div>
+        </div>
+      </div>
+      <h3>6.3 Con dao hai lưỡi Hán-Việt</h3>
+      <p>60-70% từ vựng tiếng Việt có nguồn gốc Hán-Việt — lợi thế lớn về tiếp thu từ mới, nhưng cũng là <em>bẫy false friends nguy hiểm</em>. Ví dụ: 愛人 (àirén) trong tiếng Trung nghĩa là vợ hoặc chồng, nhưng người Việt hiểu là <em>người yêu lãng mạn</em>. Học Bá đang xây dựng bộ mapping Hán-Việt false friends toàn diện đầu tiên từ dữ liệu lỗi thực tế.</p>
+    `
+  },
+
+  /* 10 — Insight Hành Vi */
+  {
+    label: 'Chương VI · Tiếp theo',
+    headline: 'Insight về Hành vi Học tập',
+    subtitle: 'Pattern đặc trưng của người Việt học tiếng Trung',
+    body: `
+      <p>LMS của Học Bá thu thập dữ liệu hành vi học tập theo thời gian thực. Bốn pattern đặc trưng sau đây được phát hiện từ dữ liệu thực tế:</p>
+      <div class="stats-grid">
+        <div class="stat-box"><span class="stat-value">300–400%</span><div class="stat-label">Spike hoạt động học trong 3–4 tuần trước ngày thi HSK, sau đó giảm mạnh</div></div>
+        <div class="stat-box"><span class="stat-value">−60%</span><div class="stat-label">Tỷ lệ luyện Speaking thấp hơn Writing và Reading — dù Speaking thường là kỹ năng yếu nhất</div></div>
+        <div class="stat-box"><span class="stat-value">70%</span><div class="stat-label">Session học xảy ra từ 8 giờ tối đến nửa đêm — phản ánh đặc thù người đi làm học thêm</div></div>
+        <div class="stat-box"><span class="stat-value" style="font-size:clamp(1.3rem,2vw,1.8rem)">Chủ đề</span><div class="stat-label">Học viên học từ theo chủ đề thay vì frequency list — tạo khoảng trống từ vựng có tính hệ thống</div></div>
+      </div>
+      <h3>Ý nghĩa trực tiếp cho thiết kế sản phẩm</h3>
+      <div class="feature-grid">
+        <div class="feature-card highlight">
+          <div class="fc-label">Từ insight Sprint</div>
+          <div class="fc-title">Chế độ ôn thi cấp tốc</div>
+          <div class="fc-body">Adaptive study plan, countdown timer đến ngày thi HSK, ưu tiên bài yếu nhất trong thời gian còn lại.</div>
+        </div>
+        <div class="feature-card highlight">
+          <div class="fc-label">Từ insight Speaking</div>
+          <div class="fc-title">Giảm rào cản tâm lý</div>
+          <div class="fc-body">Gamification, môi trường luyện an toàn, phản hồi không phán xét — khuyến khích học viên luyện Speaking thường xuyên hơn.</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-label">Từ insight Thời gian</div>
+          <div class="fc-title">UX tối giản cho đêm muộn</div>
+          <div class="fc-body">Dark mode, thông báo thông minh không làm phiền giờ hành chính, tối ưu UX cho học nhanh 15–30 phút sau giờ làm.</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-label">Từ insight Từ vựng</div>
+          <div class="fc-title">Frequency-based Learning</div>
+          <div class="fc-body">Tích hợp frequency list song song với học theo chủ đề — tự động lấp khoảng trống từ vựng có tính hệ thống.</div>
+        </div>
+      </div>
+    `
+  },
+
+  /* 11 — Tầm Nhìn AI */
+  {
+    label: 'Chương VII',
+    headline: 'Tầm Nhìn AI — Cá Nhân Hóa Học Tập',
+    subtitle: 'Bloom\'s 2 Sigma Problem và lời giải của Học Bá',
+    body: `
+      <p>Benjamin Bloom (1984) đã chỉ ra rằng học sinh được dạy kèm 1-1 đạt kết quả tốt hơn <strong style="color:var(--light-gold)">98%</strong> học sinh trong lớp học truyền thống — chênh lệch 2 độ lệch chuẩn. Vấn đề: không ai có đủ tiền thuê gia sư riêng cho mỗi học sinh. AI có khả năng giải quyết bài toán này. Học Bá đang ở vị trí lý tưởng để hiện thực hóa điều này — chúng tôi đã có dữ liệu, đã có hệ thống, và đã có hiểu biết sâu sắc về học viên.</p>
+      <div class="ai-grid">
+        <div class="ai-card">
+          <div class="ai-tier">Tầng 1</div>
+          <div class="ai-title">Diagnostic AI</div>
+          <div class="ai-desc">Phân tích chính xác: thanh điệu nào hay sai nhất, ngữ pháp nào chưa nắm, từ vựng nào hay nhầm. Tạo <em>bản đồ năng lực chi tiết</em> cho từng học viên — không phải điểm số tổng thể.</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-tier">Tầng 2</div>
+          <div class="ai-title">Adaptive Learning Engine</div>
+          <div class="ai-desc">Tự động điều chỉnh lộ trình theo từng học viên. Yếu thanh điệu → tăng bài luyện phát âm. Mạnh từ vựng nhưng yếu ngữ pháp → ưu tiên bài tập ngữ pháp. Không ai học theo lộ trình giống ai.</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-tier">Tầng 3</div>
+          <div class="ai-title">Predictive Scoring</div>
+          <div class="ai-desc">Phân tích lịch sử học tập và so sánh với pattern học viên đã thi HSK thành công. Dự báo: xác suất đạt điểm bao nhiêu? Khi nào sẵn sàng đăng ký thi? Kỹ năng nào cần tập trung trong thời gian còn lại?</div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-tier">Tầng 4</div>
+          <div class="ai-title">Teacher &amp; Management Dashboard</div>
+          <div class="ai-desc">Giáo viên biết nhóm nào đang lag, học viên nào có rủi ro bỏ học, giờ học nào hiệu quả nhất. Quản lý có BI reports: giáo viên nào hiệu quả nhất, khoá học nào có tỷ lệ hoàn thành cao nhất.</div>
+        </div>
+      </div>
+    `
+  },
+
+  /* 12 — Moat */
+  {
+    label: 'Chương VII · Tiếp theo',
+    headline: 'Lợi Thế Cạnh Tranh Bền Vững',
+    subtitle: '5 lớp bảo vệ không thể sao chép',
+    body: `
+      <p>Lợi thế cạnh tranh bền vững (Economic Moat) của Học Bá được xây dựng trên 5 lớp bảo vệ — không thể bị vượt qua chỉ bằng tiền hoặc công nghệ tốt hơn từ bên ngoài:</p>
+      <div class="moat-list">
+        <div class="moat-item"><strong style="color:var(--light-gold)">Lớp 1 — Dữ liệu độc quyền:</strong> Tập dữ liệu về lỗi sai, pattern phát âm và hành vi học tập của người Việt học tiếng Trung — không thể mua, không thể sao chép. Đây là kết quả của nhiều năm vận hành trung tâm thật với học viên thật.</div>
+        <div class="moat-item"><strong style="color:var(--light-gold)">Lớp 2 — HSK API với barem chính xác:</strong> Hàng nghìn giờ tinh chỉnh thuật toán, kiểm chứng trên bài làm thực tế. Độ chính xác không thể đạt được chỉ bằng cách gọi OpenAI API.</div>
+        <div class="moat-item"><strong style="color:var(--light-gold)">Lớp 3 — Vòng lặp dữ liệu khép kín:</strong> LMS + ERP + API tạo thành flywheel tự tăng cường. Càng nhiều học viên dùng → càng nhiều dữ liệu → model càng tốt → sản phẩm càng tốt → càng nhiều học viên.</div>
+        <div class="moat-item"><strong style="color:var(--light-gold)">Lớp 4 — Hiểu biết đặc thù Việt-Trung:</strong> Mapping lỗi ngữ pháp, danh sách false friends Hán-Việt, pattern phát âm của người Việt — không có trong training data toàn cầu, không thể học từ Internet.</div>
+        <div class="moat-item"><strong style="color:var(--light-gold)">Lớp 5 — Network effect và switching cost:</strong> Học viên đã có bản đồ năng lực trong hệ thống, lịch sử học tập, dự báo kết quả thi. Chi phí chuyển sang nền tảng khác rất cao.</div>
+      </div>
+      <blockquote>Không ai có thể rút ngắn con đường này. Dữ liệu của Học Bá là kết quả của nhiều năm vận hành trung tâm thật, dạy học viên thật, trong bối cảnh giáo dục Việt Nam thật.</blockquote>
+    `
+  },
+
+  /* 13 — Lộ Trình */
+  {
+    label: 'Chương VIII',
+    headline: 'Lộ Trình Phát Triển',
+    subtitle: 'Ba giai đoạn trở thành AI Language Company',
+    body: `
+      <p>Ba giai đoạn phát triển của Học Bá được thiết kế theo nguyên tắc <strong style="color:var(--light-gold)">Build → Scale → Export</strong> — mỗi giai đoạn tạo nền tảng vững chắc cho giai đoạn tiếp theo.</p>
+      <div class="phase-grid">
+        <div class="phase-box">
+          <div class="phase-tag">Phase 1 · Đang vận hành</div>
+          <div class="phase-title">Tự chủ công nghệ</div>
+          <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:5px">
+            <li style="padding:.28em 0 .28em 1.2em;position:relative;font-size:clamp(.78rem,.95vw,.87rem);color:rgba(255,242,200,.9);line-height:1.6"><span style="position:absolute;left:0;color:var(--gold)">✓</span> HSK Writing API — 6 dạng bài, HSK 3–6</li>
+            <li style="padding:.28em 0 .28em 1.2em;position:relative;font-size:clamp(.78rem,.95vw,.87rem);color:rgba(255,242,200,.9);line-height:1.6"><span style="position:absolute;left:0;color:var(--gold)">✓</span> HSK Speaking API — pipeline 6 tầng</li>
+            <li style="padding:.28em 0 .28em 1.2em;position:relative;font-size:clamp(.78rem,.95vw,.87rem);color:rgba(255,242,200,.9);line-height:1.6"><span style="position:absolute;left:0;color:var(--gold)">✓</span> LMS quản lý toàn bộ hành trình học tập</li>
+            <li style="padding:.28em 0 .28em 1.2em;position:relative;font-size:clamp(.78rem,.95vw,.87rem);color:rgba(255,242,200,.9);line-height:1.6"><span style="position:absolute;left:0;color:var(--gold)">✓</span> ERP vận hành trung tâm: giáo viên, tài chính, lịch</li>
+            <li style="padding:.28em 0 .28em 1.2em;position:relative;font-size:clamp(.78rem,.95vw,.87rem);color:rgba(255,242,200,.9);line-height:1.6"><span style="position:absolute;left:0;color:var(--gold)">✓</span> Thu thập dữ liệu có cấu trúc từ bài làm thực tế</li>
+            <li style="padding:.28em 0 .28em 1.2em;position:relative;font-size:clamp(.78rem,.95vw,.87rem);color:var(--light-gold);line-height:1.6;font-style:italic"><span style="position:absolute;left:0;color:var(--gold)">✓</span> Đây không phải MVP — hệ thống chạy thực tế mỗi ngày</li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <div class="phase-tag">Phase 2 · 2026–2027</div>
+          <div class="phase-title">Cá nhân hóa & Insight</div>
+          <ul>
+            <li>Adaptive Learning Engine — lộ trình học tự điều chỉnh</li>
+            <li>Diagnostic AI — chẩn đoán điểm yếu kỹ năng cá nhân</li>
+            <li>Predictive Scoring — dự báo xác suất đạt điểm HSK</li>
+            <li>Teacher Dashboard — insight chi tiết cho giáo viên</li>
+            <li>Parent/Student Report — báo cáo tiến độ định kỳ tự động</li>
+            <li>Smart Notification — nhắc nhở học tập thông minh</li>
+          </ul>
+        </div>
+        <div class="phase-box">
+          <div class="phase-tag">Phase 3 · 2027+</div>
+          <div class="phase-title">Xuất khẩu công nghệ</div>
+          <ul>
+            <li>API-as-a-Service — cung cấp HSK API cho trung tâm & ứng dụng khác</li>
+            <li>B2B SaaS — gói LMS + ERP cho trung tâm toàn quốc và ASEAN</li>
+            <li>Research Platform — nền tảng nghiên cứu ngôn ngữ học ứng dụng Việt-Trung</li>
+            <li>Foundation Model — mô hình AI đặc thù cặp ngôn ngữ Việt-Trung</li>
+            <li>Certification Partnership — hợp tác Hanban và tổ chức giáo dục quốc tế</li>
+          </ul>
+        </div>
+      </div>
+    `
+  },
+
+  /* 14 — Sứ Mệnh Xã Hội */
+  {
+    label: 'Chương IX',
+    headline: 'Sứ Mệnh Vì Nền Giáo Dục Việt Nam',
+    subtitle: 'Điều chúng tôi thực sự muốn tạo ra',
+    body: `
+      <h3>9.1 Xóa bất bình đẳng giáo dục ngôn ngữ</h3>
+      <p>Hiện tại, chất lượng học tiếng Trung tại Việt Nam có sự phân hóa rõ rệt theo địa lý và thu nhập. Học viên ở Hà Nội và TP.HCM có nhiều lựa chọn trung tâm chất lượng cao. Học viên ở các tỉnh thành nhỏ hơn thường chỉ có những lớp học quy mô nhỏ với giáo viên chưa được đào tạo bài bản. Học viên có điều kiện tốt có thể thuê gia sư riêng. Học viên ít tiền thì không thể.</p>
+      <p>Khi một học viên ở Cần Thơ, Đà Lạt hay Lào Cai có thể nhận phản hồi chính xác về bài Speaking trong vòng vài giây, và có lộ trình học được cá nhân hóa giống hệt một học viên ở trung tâm đắt tiền nhất Hà Nội — đó là khi <strong style="color:var(--light-gold)">công nghệ thực sự phục vụ công bằng giáo dục</strong>.</p>
+      <h3>9.2 Giúp giáo viên dạy tốt hơn, không thay thế giáo viên</h3>
+      <p>Chúng tôi tin rằng AI không nên và không thể thay thế người giáo viên. Người thầy mang lại những thứ mà máy móc không bao giờ có thể: sự quan tâm, niềm tin, động lực, và hiểu biết về bối cảnh cuộc sống của từng học sinh. Những gì AI có thể làm là <strong style="color:var(--light-gold)">giải phóng giáo viên khỏi những công việc lặp lại</strong>: chấm bài routine, tính điểm, ghi sổ đầu bài — để họ có nhiều thời gian làm điều mà chỉ con người mới làm được.</p>
+      <blockquote>Mục tiêu của chúng tôi không phải là thay thế giáo viên bằng AI. Mục tiêu là dùng AI để giúp mỗi giáo viên Việt Nam có thể dạy tốt hơn, hiệu quả hơn, và có thêm thời gian để quan tâm đến học sinh của mình.</blockquote>
+      <h3>9.3 Đóng góp cho nghiên cứu ngôn ngữ học ứng dụng</h3>
+      <p>Dữ liệu của Học Bá không chỉ có giá trị thương mại. Đây là nguồn tài nguyên quý giá cho cộng đồng nghiên cứu ngôn ngữ học ứng dụng tại Việt Nam: người Việt học tiếng Trung mắc những lỗi nào nhất quán nhất? Ảnh hưởng của Hán-Việt đến tiếp thu tiếng Trung như thế nào? Chúng tôi có kế hoạch công bố white paper và hợp tác với các trường đại học — <em>vì tri thức nên được chia sẻ</em>.</p>
+    `
+  },
+
+  /* 15 — Tầm Nhìn Dài Hạn */
+  {
+    label: 'Chương IX · Tiếp theo',
+    headline: 'Tầm Nhìn Dài Hạn: Học Bá vì Việt Nam',
+    subtitle: 'Câu chuyện lớn hơn một công ty EdTech',
+    body: `
+      <p>Học Bá không chỉ muốn là một công ty EdTech thành công. Chúng tôi muốn là một phần của câu chuyện lớn hơn: <strong style="color:var(--light-gold)">Việt Nam xây dựng được năng lực công nghệ AI ngôn ngữ tự chủ</strong>.</p>
+      <p>Trong một thế giới mà AI ngôn ngữ đang bị thống trị bởi các công ty Mỹ và Trung Quốc, Việt Nam cần có tiếng nói riêng. Không phải để cạnh tranh toàn cầu ngay lập tức — mà để đảm bảo rằng công nghệ AI phục vụ người Việt được xây dựng bởi người <em>hiểu người Việt nhất</em>. Trong thế giới AI, người có dữ liệu tốt nhất sẽ thắng — và dữ liệu tốt nhất về người Việt học ngôn ngữ là của Học Bá.</p>
+      <h3>Mở rộng từ tiếng Trung sang đa ngôn ngữ</h3>
+      <p>Học Bá bắt đầu từ tiếng Trung vì đây là nơi chúng tôi có dữ liệu, kinh nghiệm, và thị trường rõ ràng nhất. Nhưng nguyên lý và công nghệ đang xây dựng có thể áp dụng rộng hơn nhiều: cho tiếng Anh, tiếng Nhật, tiếng Hàn, hay bất kỳ ngôn ngữ nào mà người Việt đang học. Kiến trúc hybrid AI + rule engine, pipeline ASR 6 tầng, và hệ thống barem chấm — tất cả đều có thể mở rộng sang cặp ngôn ngữ mới.</p>
+      <h3>Mốc thời gian chiến lược</h3>
+      <div class="feature-grid three-col">
+        <div class="feature-card highlight">
+          <div class="fc-label">2026</div>
+          <div class="fc-title">AI Cá nhân hóa</div>
+          <div class="fc-body">Ra mắt Adaptive Learning + Diagnostic AI. Mở rộng đối tác B2B tại các tỉnh thành lớn Việt Nam.</div>
+        </div>
+        <div class="feature-card highlight">
+          <div class="fc-label">2027</div>
+          <div class="fc-title">API-as-a-Service</div>
+          <div class="fc-body">Launch HSK API cho thị trường bên ngoài. Thâm nhập ASEAN: Indonesia, Thái Lan, Philippines.</div>
+        </div>
+        <div class="feature-card highlight">
+          <div class="fc-label">2028+</div>
+          <div class="fc-title">Foundation Model</div>
+          <div class="fc-body">Mô hình AI đặc thù cặp ngôn ngữ Việt-Trung. Partnership với Hanban và tổ chức giáo dục quốc tế.</div>
+        </div>
+      </div>
+      <blockquote>Dữ liệu tốt nhất không đến từ Internet. Nó đến từ những người thực sự đang học, đang nói, đang viết — và đang mắc lỗi — trong một ngôn ngữ mà họ chưa thành thạo. Chúng tôi may mắn có được nguồn dữ liệu đó.</blockquote>
+    `
+  },
+
+  /* 16 — Kết Luận */
+  {
+    label: 'Kết Luận',
+    headline: '学霸 · HỌC BÁ — Không chỉ dạy tiếng Trung',
+    subtitle: 'Lời kết từ đội ngũ sáng lập',
+    body: `
+      <p>Khi chúng tôi bắt đầu hành trình này, không ai nghĩ rằng một trung tâm tiếng Trung ở Việt Nam sẽ tự xây dựng được hệ thống AI chấm bài thi quốc tế. Không ai nghĩ chúng tôi sẽ có pipeline xử lý audio 6 tầng, hay thuật toán off-topic detection bằng bigram/trigram overlap, hay hệ thống verifier loại hallucination trong real-time.</p>
+      <p>Chúng tôi đã làm được. Không phải vì chúng tôi giỏi hơn ai — mà vì chúng tôi bắt đầu từ <strong style="color:var(--light-gold)">đúng chỗ: từ học viên thật, từ lớp học thật, từ nhu cầu thật</strong>. Công nghệ của chúng tôi không được xây dựng trong phòng lab — nó được xây dựng từ hàng nghìn buổi học, hàng nghìn bài thi, và hàng nghìn lần nhìn thấy học viên mình thất bại rồi đứng lên.</p>
+      <h3>Lời nhắn đến từng bên liên quan</h3>
+      <blockquote>Với <strong style="color:var(--light-gold)">chuyên gia ngôn ngữ</strong>: chúng tôi mời bạn cùng nhìn vào dữ liệu và insight — không phải để xem một sản phẩm công nghệ, mà để cùng suy ngẫm về những gì nó nói lên về người Việt học tiếng Trung. Có rất nhiều điều thú vị đang ẩn trong những bài làm và audio đó.</blockquote>
+      <blockquote>Với <strong style="color:var(--light-gold)">nhà đầu tư</strong>: chúng tôi không đến với tay không. Chúng tôi đến với công nghệ đã xây, dữ liệu đã có, thị trường đã hiểu, và một đội ngũ đã trải qua thực tế. Những gì chúng tôi cần là nguồn lực để đẩy nhanh hành trình — từ trung tâm ngôn ngữ một vùng sang nền tảng công nghệ phục vụ triệu người học.</blockquote>
+      <blockquote>Với <strong style="color:var(--light-gold)">bất kỳ ai quan tâm đến giáo dục Việt Nam</strong>: chúng tôi không làm điều này chỉ vì tiền. Công nghệ là phương tiện. Giáo dục mới là đích đến. Mỗi học viên Việt Nam, dù ở đâu và có hoàn cảnh thế nào, đều xứng đáng được học tốt nhất.</blockquote>
+      <p style="text-align:center; margin-top:1.8em; color:rgba(201,146,42,.55); letter-spacing:.18em; font-size:.9rem;">学霸 · HỌC BÁ · Language Technology<br><em style="font-size:.85em">Vì một nền giáo dục ngôn ngữ Việt Nam tốt hơn.</em><br><span style="font-size:.75em; opacity:.7">© 2026 Học Bá · Tài liệu nội bộ · Bảo mật</span></p>
+    `
+  }
+];
+
+/* =====================================================
+   RENDER ENGINE — only 3 slides in DOM at a time
+   ===================================================== */
+const wrapper = document.getElementById('slides-wrapper');
+const prevBtn  = document.getElementById('prevBtn');
+const nextBtn  = document.getElementById('nextBtn');
+const counter  = document.getElementById('slide-counter');
+const dotsEl   = document.getElementById('dots');
+
+let current = 0;
+let isAnimating = false;
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+
+function buildCard(s) {
+  if (s.type === 'cover') {
+    return `
+      <div class="cover-logo-wrap">
+        <div class="cover-logo-glow"></div>
+        <img class="cover-logo" src="logo.png" alt="Học Bá Logo">
+      </div>
+      <div class="cover-tagline">${s.tagline}</div>
+      <div class="cover-divider"></div>
+      <div class="cover-title">${s.title}</div>
+    `;
+  }
+  return `
+    <div class="slide-label">${s.label}</div>
+    <div class="slide-headline">${s.headline}</div>
+    <div class="slide-subtitle">${s.subtitle}</div>
+    <div class="gold-hr"></div>
+    <div class="slide-body">${s.body}</div>
+  `;
+}
+
+function renderSlide(idx) {
+  const existing = wrapper.querySelector(`[data-idx="${idx}"]`);
+  if (existing) return existing;
+
+  const el = document.createElement('div');
+  el.className = 'slide' + (slides[idx].type === 'cover' ? ' slide-cover' : '');
+  el.dataset.idx = idx;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = buildCard(slides[idx]);
+  el.appendChild(card);
+  wrapper.appendChild(el);
+  return el;
+}
+
+function cleanupDistant(cur) {
+  wrapper.querySelectorAll('.slide').forEach(el => {
+    const i = +el.dataset.idx;
+    if (Math.abs(i - cur) > 1) el.remove();
+  });
+}
+
+function updateDots(idx) {
+  dotsEl.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+
+function updateCounter(idx) {
+  const n = String(idx + 1).padStart(2, '0');
+  const t = String(slides.length).padStart(2, '0');
+  counter.textContent = `${n} / ${t}`;
+}
+
+function updateNav(idx) {
+  prevBtn.disabled = idx === 0;
+  nextBtn.disabled = idx === slides.length - 1;
+}
+
+function goTo(next) {
+  if (isAnimating || next === current || next < 0 || next >= slides.length) return;
+  isAnimating = true;
+
+  const dir = next > current ? 1 : -1;
+  const prev = current;
+
+  // Only render the target slide now — neighbours deferred to after animation
+  const newEl = renderSlide(next);
+  const oldEl = wrapper.querySelector(`[data-idx="${prev}"]`);
+
+  // Position new slide off-screen, then trigger animation in next frame
+  newEl.classList.remove('active', 'prev', 'enter');
+  newEl.classList.add('enter');
+  newEl.getBoundingClientRect(); // force reflow
+
+  if (oldEl) oldEl.classList.remove('active');
+  if (oldEl) oldEl.classList.add(dir > 0 ? 'prev' : 'enter');
+  newEl.classList.remove('enter');
+  newEl.classList.add('active');
+
+  current = next;
+  updateDots(current);
+  updateCounter(current);
+  updateNav(current);
+
+  setTimeout(() => {
+    // Pre-render neighbours only after animation is done
+    if (current > 0)                    renderSlide(current - 1);
+    if (current < slides.length - 1)   renderSlide(current + 1);
+    cleanupDistant(current);
+    isAnimating = false;
+  }, 720);
+}
+
+// Initial render
+renderSlide(0);
+renderSlide(1);
+const first = wrapper.querySelector('[data-idx="0"]');
+first.classList.add('active');
+updateCounter(0);
+updateNav(0);
+
+prevBtn.addEventListener('click', () => goTo(current - 1));
+nextBtn.addEventListener('click', () => goTo(current + 1));
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
+});
+
+// Touch/swipe
+let touchX = 0;
+document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+document.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 50) goTo(dx < 0 ? current + 1 : current - 1);
+}, {passive:true});
+</script>
+</body>
+</html>
